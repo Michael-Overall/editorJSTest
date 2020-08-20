@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+
+<head>
+</head>
+
+<body>
+    {{#each articles as |article|}}
+    <!--implementation should not assume the layout/type/order of article blocks (instead use additional discrete text fields)-->
+    <div class="div__articleListItem" id="div__article_{{{article._id}}}" style="text-align: left; padding-left: 5%; border: 1px solid grey"><h3>{{{article.blocks.0.data.text}}}</h3><p>{{{article.blocks.1.data.text}}}</p>
+    <p><a href="/editor/{{{article._id}}}">edit</a></p>
+    </div>
+    {{/each}}
+</body>
+
+</html>

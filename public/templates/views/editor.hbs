@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+</head>
+
+<body>
+    <div id="editorDiv" style="border: 3px dashed black; margin: auto; width: 50%;"></div>
+    <div id="div__ctrls">
+        <input id="btn__editorSubmit" type="button" onclick="editorSubmit()" value="Save Article"
+            style="display: none; margin: auto;">
+        <p id="p__editorResults"></p>
+    </div>
+    <script src="/editorjs/editor.js"></script>
+    <script src="/editorjs/header/bundle.js"></script>
+    <script src="/editorjs/embed/bundle.js"></script>
+    <script src="/editorjs/image/bundle.js"></script>
+    <script src="/editorjs/link/bundle.js"></script>
+    <script src="/editorjs/list/bundle.js"></script>
+    <script src="/editorjs/quote/bundle.js"></script>
+    <script src="/editorjs/raw/bundle.js"></script>
+
+    <script>
+        //instantiate + config article editor
+        const editor = new EditorJS(
+            {
+                holder: 'editorDiv',
+                tools: {
+                    header: {
+                        class: Header,
+                        inlineToolbar: ['link']
+                    },
+                    //see https://github.com/editor-js/embed
+                    // embed: {
+                    //    class: Embed
+                    //},
+                    image: {
+                        class: ImageTool,
+                        inlineToolbar: true,
+                        config: {
+                            endpoints: {
+                                byFile: 'http://localhost:3001/uploadFile', // Your backend file uploader endpoint
+                                byUrl: 'http://localhost:3001/fetchUrl', // Your endpoint that provides uploading by Url
+                            }
+                        }
+                    },
+                    /*Note: this Tool requires server-side implementation for link data fetching.
+                     See https://github.com/editor-js/link#server-format for more details.*/
+                    // linkTool: { //allows adding link previews to your articles
+                    //    class: LinkTool,
+                    //   inlineToolbar: ['link'],
+                    //config:{
+                    //    endpoint: 'https://localhost:3001/urlPreview' //for fetching url data/preview of link content
+                    // }
+                    //},
+                    list: {
+                        class: List,
+                        inlineToolbar: ['link']
+                    },
+                    quote: {
+                        class: Quote,
+                        inlineToolbar: ['link']
+                    },
+                    rawTool: {
+                        class: RawTool,
+                        inlineToolbar: ['link']
+                    }
+                },
+                onReady: () => {
+                    let submitBtn = document.getElementById("btn__editorSubmit");
+                    submitBtn.style.display = "block";
+                },
+                //initialize editor with existing article data
+                data: {{{ editorData }}}
+            
+            }  
+            
+        );
+       // console.log("editorData: ", {{ editorData.data }});
+    </script>
+    <script src="/scripts/editorScripts.js"></script>
+</body>
+
+</html>

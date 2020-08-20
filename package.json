@@ -1,0 +1,27 @@
+{
+  "name": "editorJSTest",
+  "version": "1.0.0",
+  "description": "barebones express server backed by mongodb for testing content creation with editorJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@editorjs/editorjs": "^2.18.0",
+    "@editorjs/embed": "^2.3.1",
+    "@editorjs/header": "^2.5.0",
+    "@editorjs/image": "^2.5.0",
+    "@editorjs/link": "^2.2.1",
+    "@editorjs/list": "^1.5.0",
+    "@editorjs/quote": "^2.3.0",
+    "@editorjs/raw": "^2.1.2",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "hbs": "^4.1.1",
+    "mongodb": "^3.6.0",
+    "mongoose": "^5.10.0"
+  }
+}
