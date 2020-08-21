@@ -30,7 +30,10 @@ app.use('/editorjs/raw', express.static(__dirname + '/../node_modules/@editorjs/
 app.use('/scripts', express.static(__dirname + '/../public/scripts'));
 
 app.use(bodyParser.json());
-// //TODO: multer for img uploads
+//you may want to add support for css, text/calendar, etc, here if expanding code to become a more fully functional CMS 
+const validFileMimetypes = ["image/gif", "image/bmp", "image/jpeg", "image/png", "image/svg+xml", "image/tiff", "image/webp"];
+process.env.VALID_FILE_MIMETYPES = validFileMimetypes;
+
 
 const articleRouter = require('./routers/articles');
 app.use(articleRouter);
