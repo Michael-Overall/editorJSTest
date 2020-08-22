@@ -37,6 +37,8 @@ process.env.VALID_FILE_MIMETYPES = validFileMimetypes;
 
 const articleRouter = require('./routers/articles');
 app.use(articleRouter);
+const imageRouter = require('./routers/images');
+app.use(imageRouter);
 
 console.log("server is listening on localhost:3001. check routers directory for valid endpoints");
 app.listen(3001);

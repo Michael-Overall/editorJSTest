@@ -7,10 +7,44 @@
 <body>
     {{#each articles as |article|}}
     <!--implementation should not assume the layout/type/order of article blocks (instead use additional discrete text fields)-->
-    <div class="div__articleListItem" id="div__article_{{{article._id}}}" style="text-align: left; padding-left: 5%; border: 1px solid grey"><h3>{{{article.blocks.0.data.text}}}</h3><p>{{{article.blocks.1.data.text}}}</p>
-    <p><a href="/editor/{{{article._id}}}">edit</a></p>
+    <div class="div__articleListItem" id="div__article_{{{article._id}}}"
+        style="text-align: left; padding-left: 5%; border: 1px solid grey">
+        <h3><a href="/article/{{{article._id}}}">{{{article.blocks.0.data.text}}}</a></h3>
+        <p>{{{article.blocks.1.data.text}}}</p>
+        <p>
+            <a href="/editor/{{{article._id}}}">edit</a>
+            <a href="#" onclick="deleteArticle('{{{article._id}}}')">delete</a>
+        </p>
+        <p id="p__msg_{{{article._id}}}"></p>
     </div>
     {{/each}}
+
+    <script>
+      function  deleteArticle(id){
+            if (confirm("delete this article?")) {
+                var xmlHttpReq = new XMLHttpRequest();
+                xmlHttpReq.onreadystatechange = () => {
+                    if (xmlHttpReq.readyState === XMLHttpRequest.DONE) {
+                        var status = xmlHttpReq.status;
+                        let pMsg = document.getElementById('p__msg_' + id);
+                        if (status === 0 || (status >= 200 && status < 400)) {
+                            let articleDiv = document.getElementById(`div__article_${id}`);
+                            articleDiv.style.display = "none";
+                            //alteratively:
+                            //articleDiv.parentNoede.removeChild(articleDiv);
+                        }
+                        else {
+                            pMsg.style.color = 'red';
+                            pMsg.innerHTML = `Error: Could not delete article.<br>Status: ${xmlHttpReq.status}; Message: ${xmlHttpReq.statusText}; ${xmlHttpReq.response}`;
+                        }
+                    }
+                }
+                let reqURL = 'http://localhost:3001/article/'+id;
+                xmlHttpReq.open("DELETE", reqURL);
+                xmlHttpReq.send();
+            }
+      }
+    </script>
 </body>
 
 </html>
