@@ -35,7 +35,10 @@ const articleToHTML=(article)=> {
 
                 break;
             case "quote":
-                throw new Error("quote tool: html rendering not implemented");
+               html+=` <div class = "div__quote">`+
+                    `<p class="p__quoteText" style="text-align: ${block.data.alignment};">${block.data.text}</p>`+
+                   ` <p class = "p__quoteCaption">${block.data.caption}</p>`+
+                `</div>`
 
                 break;
             default:

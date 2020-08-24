@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+
+<head>
+</head>
+
+<body>
+    {{#each images as |image|}}
+    <div class="div__imgListItem" id="div__imgList_{{{image._id}}}">
+        <span><img id="img__thumb_{{image._id}}" src="/imgThumbs/{{image._id}}" alt="{{{image.originalname}}}"> <p style="display: inline">{{image.originalname}}</p><a href="#{{{image.originalname}}}-delete" onclick="imgDelete('{{{image._id}}}')">delete</a></span>
+    </div>
+    {{/each}}
+    <div id="div__pgIndices">
+        <span>Page:</span>
+        {{#repeat numPgs}}
+        <a href="/imageList/{{@index}}">{{@index}}</a>
+
+        {{/repeat}}
+    </div>
+    <script>
+        function imgDelete(id){
+              if (confirm("delete this image?")) {
+                var xmlHttpReq = new XMLHttpRequest();
+                xmlHttpReq.onreadystatechange = () => {
+                    if (xmlHttpReq.readyState === XMLHttpRequest.DONE) {
+                        var status = xmlHttpReq.status;
+                       
+                        if (status === 0 || (status >= 200 && status < 400)) {
+                            let imgDiv = document.getElementById('div__imgList_' + id);
+                            imgDiv.style.display = "none";
+                        }
+                        else {
+                           alert(`Error: Could not delete image.<br>Status: ${xmlHttpReq.status}; Message: ${xmlHttpReq.statusText}; ${xmlHttpReq.response}`);
+                        }
+                    }
+                }
+                let reqURL = 'http://localhost:3001/images/'+id;
+                xmlHttpReq.open("DELETE", reqURL);
+                xmlHttpReq.send();
+            }
+        }
+    </script>
+</body>
+
+</html>

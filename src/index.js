@@ -13,6 +13,15 @@ const Article = require('./models/article');
 const { Block } = require('./models/block');
 
 hbs.registerPartials(path.join(__dirname, "/../public/templates/partials"));
+hbs.registerHelper('repeat', (n, block)=>{
+    var accumulator = '';
+    for(var i = 1; i <= n; i++){
+        //can reference block data with {{@varName}} -> {{@index}}
+        block.data.index = i;
+        accumulator += block.fn(i);
+    }
+    return accumulator;
+})
 
 
 const app = express();
@@ -27,12 +36,14 @@ app.use('/editorjs/link', express.static(__dirname + '/../node_modules/@editorjs
 app.use('/editorjs/list', express.static(__dirname + '/../node_modules/@editorjs/list/dist'));
 app.use('/editorjs/quote', express.static(__dirname + '/../node_modules/@editorjs/quote/dist'));
 app.use('/editorjs/raw', express.static(__dirname + '/../node_modules/@editorjs/raw/dist'));
+app.use('/editorjs/attaches', express.static(__dirname + '/../node_modules/@editorjs/attaches/dist'));
+
 app.use('/scripts', express.static(__dirname + '/../public/scripts'));
 
 app.use(bodyParser.json());
 //you may want to add support for css, text/calendar, etc, here if expanding code to become a more fully functional CMS 
-const validFileMimetypes = ["image/gif", "image/bmp", "image/jpeg", "image/png", "image/svg+xml", "image/tiff", "image/webp"];
-process.env.VALID_FILE_MIMETYPES = validFileMimetypes;
+const validImgFileMimetypes = ["image/gif", "image/bmp", "image/jpeg", "image/png", "image/svg+xml", "image/tiff", "image/webp"];
+process.env.VALID_IMG_FILE_MIMETYPES = validImgFileMimetypes;
 
 
 const articleRouter = require('./routers/articles');

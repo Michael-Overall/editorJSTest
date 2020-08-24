@@ -1,7 +1,4 @@
 const express = require('express');
-const hbs = require('hbs');
-const path = require('path');
-const multer = require('multer');
 
 const Article = require('../models/article');
 const { Block } = require('../models/block');

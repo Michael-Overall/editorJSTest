@@ -21,6 +21,7 @@
     <script src="/editorjs/list/bundle.js"></script>
     <script src="/editorjs/quote/bundle.js"></script>
     <script src="/editorjs/raw/bundle.js"></script>
+    <script src="/editorjs/attaches/bundle.js"></script>
 
     <script>
         //instantiate + config article editor
@@ -30,11 +31,17 @@
                 tools: {
                     header: {
                         class: Header,
-                        inlineToolbar: ['link']
+                        inlineToolbar: true
                     },
-                    //see https://github.com/editor-js/embed
-                    // embed: {
-                    //    class: Embed
+                    /*see https://github.com/editor-js/embed
+                    also see https://github.com/editor-js/embed/issues/11
+                    This tool isn't very useful since it requires that you provide embed code when rendering json to html anyway.
+                    Solution: use rawTool with embed code provided by various sites
+                    (ie you can paste youtube's 'copy embed code' right into the rawTool and it works)
+                     NO. BAD!:
+                     */
+                     //embed: {
+                      //  class: Embed
                     //},
                     image: {
                         class: ImageTool,
@@ -42,7 +49,7 @@
                         config: {
                             endpoints: {
                                 byFile: 'http://localhost:3001/imgUploadFile', // Your backend file uploader endpoint
-                                byUrl: 'http://localhost:3001/fetchUrl', // Your endpoint that provides uploading by Url
+                                byUrl: 'http://localhost:3001/imgByUrl', // Your endpoint that provides uploading by Url
                             }
                         }
                     },
@@ -55,18 +62,28 @@
                     //    endpoint: 'https://localhost:3001/urlPreview' //for fetching url data/preview of link content
                     // }
                     //},
+
                     list: {
                         class: List,
-                        inlineToolbar: ['link']
+                        inlineToolbar: true
                     },
                     quote: {
                         class: Quote,
-                        inlineToolbar: ['link']
+                        inlineToolbar: true
                     },
                     rawTool: {
                         class: RawTool,
-                        inlineToolbar: ['link']
-                    }
+                        inlineToolbar: true
+                    },
+                  //  attaches: {
+                  //      class: AttachesTool,
+                  //      config: {
+                  //          endpoint: 'http://localhost:3001/attachment'
+                   //     },
+                  //      inlineToolbar: true
+                  // }
+
+                    
                 },
                 onReady: () => {
                     let submitBtn = document.getElementById("btn__editorSubmit");
