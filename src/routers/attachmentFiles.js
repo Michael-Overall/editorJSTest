@@ -57,9 +57,9 @@ router.post('/attachments/', (req, res, next) => {
                 // }
                 var attachment = new Attachment({ size: file.size, buffer: file.buffer, originalname: file.originalname, mimetype: file.mimetype, encoding: file.encoding });
                 let wResult = await attachment.save();
-                //TODO: editorjs bundle throws 'o' undefined error, but item makes it into db, and can be downloaded via get endpoint...
-                //since 'o' is a var name all over the place in the compressed 'bundle.js' for the attaches plugin, this will be difficult to troubleshoot.
-                return res.status(200).send({ success: 1, file: {url: '/attachments/' + wResult._id}})//{ originalname: wResult.originalName, encoding: wResult.encoding, mimetype: wResult.mimetype, buffer: wResult.buffer, size: wResult.size } })
+                
+                //NOTE: be careful of req vs res 'file' obj keys; src code shows that 'file' obj props differ in plugin's index.js onUploadResponse(), and are required if file{} is provided
+                return res.status(200).send({ success: 1, file: {url: '/attachments/' + wResult._id, name: wResult.originalname, size: wResult.size}});
             }
             else {
                 return res.status(400).send();
