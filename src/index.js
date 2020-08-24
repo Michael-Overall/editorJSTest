@@ -50,6 +50,8 @@ const articleRouter = require('./routers/articles');
 app.use(articleRouter);
 const imageRouter = require('./routers/images');
 app.use(imageRouter);
+const attachmentRouter = require('./routers/attachmentFiles');
+app.use(attachmentRouter);
 
 console.log("server is listening on localhost:3001. check routers directory for valid endpoints");
 app.listen(3001);
