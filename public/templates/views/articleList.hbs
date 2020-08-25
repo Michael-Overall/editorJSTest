@@ -9,8 +9,8 @@
     <!--implementation should not assume the layout/type/order of article blocks (instead use additional discrete text fields or search for block types (try populating new viewmodel?))-->
     <div class="div__articleListItem" id="div__article_{{{article._id}}}"
         style="text-align: left; padding-left: 5%; border: 1px solid grey">
-        <h3><a href="/article/{{{article._id}}}">{{{article.blocks.0.data.text}}}</a></h3>
-        <p>{{{article.blocks.1.data.text}}}</p>
+        <h3><a href="/article/{{{article._id}}}">{{{article.title}}}</a></h3>
+        <p>{{{article.excerpt}}}</p>
         <p>
             <a href="/editor/{{{article._id}}}">edit</a>
             <a href="#" onclick="deleteArticle('{{{article._id}}}')">delete</a>

@@ -6,13 +6,38 @@ const { Block } = require('../models/block');
 
 
 const articleToHTML = require('../helpers/articleToHTML');
+const block = require('../models/block');
 
 
 const router = new express.Router();
 
 router.get('/articles', async (req, res) => {
-    //TODO: experiment w/ pagination, filters etc
+    //TODO: experiment w/ pagination, filters, search criteria
     var articles = await Article.find().sort({ time: -1 });
+    //TODO: check efficiency of this vs complex mongoose query with aggregation?
+    //TODO: consider dedicated 'title' textbox on editorJS page instead of trying to extrapolate
+    for(let article of articles){
+        console.log('article:', article);
+        article.title='';
+        article.excerpt = '';
+        article.blocks.some(block=>{
+            //try to generate 'title' from first header
+            if(block.type == 'header' && !article.title){
+                article.title = block.data.text;
+            }
+            if(block.type == 'paragraph' && ! article.excerpt){
+                article.excerpt = block.data.text.substr(0, 147);//.replace(/^(.{150}[^\s]*).*/, "$1"); 
+                article.excerpt += '...';
+            }
+            if(article.title && article.excerpt){
+                //break
+                return true;
+            }
+        });
+        if(!article.title){
+            article.title='Untitled';
+        }
+    }
 
     if (articles) {
         res.render('articleList', { articles: articles });
