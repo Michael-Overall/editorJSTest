@@ -17,13 +17,26 @@ router.get('/articles', async (req, res) => {
     //TODO: check efficiency of this vs complex mongoose query with aggregation?
     //TODO: consider dedicated 'title' textbox on editorJS page instead of trying to extrapolate
     for(let article of articles){
-        console.log('article:', article);
+        //console.log('article:', article);
         article.title='';
         article.excerpt = '';
         article.blocks.some(block=>{
-            //try to generate 'title' from first header
+            //try to generate 'title' from first header, and excerpt from first paragraph
             if(block.type == 'header' && !article.title){
                 article.title = block.data.text;
+            }
+            //TODO: also look for excerpt in raw (assuming text appears only  in <p> may be incorrect)
+            if(block.type == 'rawTool' && ! article.title){
+                let html = block.data.html;
+                let regex = /<h.*<\/h[1-9]*>/;
+                let match = html.match(regex);
+                if(match){
+                    match = match[0];
+                    //strip all html tags
+                    match = match.replace(/(<([^>]+)>)/gi, "");
+                    article.title = match;
+                }
+
             }
             if(block.type == 'paragraph' && ! article.excerpt){
                 article.excerpt = block.data.text.substr(0, 147);//.replace(/^(.{150}[^\s]*).*/, "$1"); 

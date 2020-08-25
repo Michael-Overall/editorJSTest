@@ -1,6 +1,5 @@
 const articleToHTML=(article)=> {
     var html = "";
-    //TODO: article title?
     article.blocks.forEach(block => {
         switch (block.type) {
             case "header":
